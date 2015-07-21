@@ -31,8 +31,6 @@ function MumblePing(host, port, callback) {
 
 	client.on('error', function(err) {
 		callback(err);
-
-		client.close();
 	});
 
 	var req = new Buffer(12);
@@ -42,11 +40,7 @@ function MumblePing(host, port, callback) {
 	req.writeUInt32BE(5678, 8);
 
 	client.send(req, 0, req.length, port, host, function(err) {
-		if (err) {
-			callback(err);
-
-			client.close();
-		}
+		client.close();
 	});
 }
 
