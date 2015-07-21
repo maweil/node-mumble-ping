@@ -41,7 +41,13 @@ function MumblePing(host, port, callback) {
 	req.writeUInt32BE(1234, 4);
 	req.writeUInt32BE(5678, 8);
 
-	client.send(req, 0, req.length, port, host);
+	client.send(req, 0, req.length, port, host, function(err) {
+		if (err) {
+			callback(err);
+
+			client.close();
+		}
+	});
 }
 
 module.exports = MumblePing;
