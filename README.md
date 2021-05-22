@@ -50,3 +50,17 @@ mp.MumblePing('localhost', function(err, res) {
   console.log(res);
 });
 ```
+
+### Using the CLI
+
+You can try to ping a mumble server by using the `mumble_ping_cli.js` script in this repository.
+It accepts the host and (optionally) port as command line arguments.
+To ping a mumble server running on localhost and port 64738 (default), the following commands would work:
+
+```bash
+# Specifying the port although not needed here
+node mumble_ping_cli.js localhost 64738
+
+# Using the default port
+node mumble_ping_cli.js localhost
+```

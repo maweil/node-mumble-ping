@@ -11,11 +11,11 @@ function _expectValidPingResult (response) {
   expect(response.bandwidth).toBeGreaterThanOrEqual(1000)
 }
 
-function _getTestMumbleServer(){
-  return process.env["MUMBLE_SERVER"] || "localhost"
+function _getTestMumbleServer () {
+  return process.env.MUMBLE_SERVER || 'localhost'
 }
 
-function _expectHostNotFound(error) {
+function _expectHostNotFound (error) {
   const expectedError = new Error()
   expectedError.code = 'ENOTFOUND'
   expectedError.hostname = 'unknown_host.example'
@@ -34,10 +34,10 @@ test('Promise resolves with error on timeout', () => {
 })
 
 test('Promise resolves with error when host is not found', () => {
-  expect.assertions(2);
+  expect.assertions(2)
   return mp.pingMumble(UNKNOWN_HOST_EXAMPLE, '60000', 45000).catch(e => {
     _expectHostNotFound(e)
-  });
+  })
 })
 
 test('Compatible with example for nikkiii/node-mumble-ping on success', done => {
@@ -57,4 +57,3 @@ test('Compatible with example for nikkiii/node-mumble-ping on error', done => {
     done()
   })
 })
-

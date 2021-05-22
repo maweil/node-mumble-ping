@@ -6,7 +6,7 @@ const dgram = require('dgram')
  * @property {string} version - Version of the mumble server.
  * @property {number} users - Number of users currently online.
  * @property {number} maxUsers - Maximum number of users that can connect simultaneously.
- * @property {number} bandwidth - Maximum bandwith in b/s per user.
+ * @property {number} bandwidth - Maximum bandwidth in b/s per user.
  */
 
 function _getPingBody () {
@@ -18,13 +18,13 @@ function _getPingBody () {
 }
 
 /**
- * Ping the given mumble server and query version, number of users and bandwith
+ * Ping the given mumble server and query version, number of users and bandwidth
  * @param {string} host Host to connect to.
- * @param {string} port Port to connect to. Mumble's default port is 64738
+ * @param {number} port Port to connect to. Mumble's default port is 64738
  * @param {number} requestTimeout Number of milliseconds to wait before rejecting with a timeout error
- * @returns {Promise<MumblePingResponse>} Promise that resolves with the response of the ping if successfull.
+ * @returns {Promise<MumblePingResponse>} Promise that resolves with the response of the ping if successful.
  */
-function pingMumble (host, port = 64738, requestTimeout = 10000) {
+function pingMumble (host, port = 64738, requestTimeout = 5000) {
   const client = dgram.createSocket('udp4')
   return new Promise(function (resolve, reject) {
     const timeout = setTimeout(() => {
@@ -67,13 +67,13 @@ function pingMumble (host, port = 64738, requestTimeout = 10000) {
  * Callback for MumblePing
  * @callback MumblePingCallback
  * @param {Error} error
- * @param {MumblePingResoinse} response
+ * @param {MumblePingResponse} response
  */
 
 /**
- * Ping the given mumble server and query version, number of users and bandwith
+ * Ping the given mumble server and query version, number of users and bandwidth
  * @param {string} host Host to connect to.
- * @param {string} port Port to connect to. Mumble's default port is 64738
+ * @param {number} port Port to connect to. Mumble's default port is 64738
  * @param {MumblePingCallback} callback
  */
 function MumblePing (host, port, callback) {
