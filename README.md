@@ -5,7 +5,7 @@ This library can be used to ping a mumble server via UDP and retreive the follow
 - Version of the mumble server
 - Number of users currently connected
 - Maximum number of users that can connect simultaneously
-- Maximum bandwith per user
+- Maximum bandwidth per user
 
 ## Installation
 
