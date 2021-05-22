@@ -28,4 +28,4 @@ jobs:
       env:
         MUMBLE_SERVER: ${{ secrets.MUMBLE_SERVER }}
     - run: npm ci
-    - run: npm test
+    - run: npx jest --coverage --testTimeout=60000
