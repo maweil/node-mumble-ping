@@ -29,7 +29,7 @@ mp.pingMumble('localhost').then(response => console.log(response))
 
 The response object looks like the following:
 
-```json
+```js
 { version: '1.3', users: 3, maxUsers: 50, bandwidth: 72000 }
 ```
 
