@@ -4,29 +4,28 @@ const MumblePing = mp.MumblePing
 
 const UNKNOWN_HOST_EXAMPLE = 'unknown_host.example'
 
-function expectValidPingResult (response) {
+function _expectValidPingResult (response) {
   expect(response.version).toMatch(/\d.\d/)
   expect(response.users).toBeGreaterThanOrEqual(0)
   expect(response.maxUsers).toBeGreaterThanOrEqual(1)
   expect(response.bandwidth).toBeGreaterThanOrEqual(1000)
 }
 
-function getExpectedErrorENOTFOUND () {
-  const expectedError = new Error()
-  expectedError.code = 'ENOTFOUND'
-  expectedError.errno = -3008
-  expectedError.syscall = 'getaddrinfo'
-  expectedError.hostname = 'unknown_host.example'
-  return expectedError
-}
-
-function getTestMumbleServer(){
+function _getTestMumbleServer(){
   return process.env["MUMBLE_SERVER"] || "localhost"
 }
 
+function _expectHostNotFound(error) {
+  const expectedError = new Error()
+  expectedError.code = 'ENOTFOUND'
+  expectedError.hostname = 'unknown_host.example'
+  expect(error.code).toBe(expectedError.code)
+  expect(error.host).toBe(expectedError.host)
+}
+
 test('Promise resolves with meaningful values for real server', () => {
-  return mp.pingMumble(getTestMumbleServer(), 64738).then(response => {
-    expectValidPingResult(response)
+  return mp.pingMumble(_getTestMumbleServer(), 64738, 45000).then(response => {
+    _expectValidPingResult(response)
   })
 })
 
@@ -35,15 +34,16 @@ test('Promise resolves with error on timeout', () => {
 })
 
 test('Promise resolves with error when host is not found', () => {
-  const expectedError = getExpectedErrorENOTFOUND()
-
-  return expect(mp.pingMumble(UNKNOWN_HOST_EXAMPLE, '60000')).rejects.toEqual(expectedError)
+  expect.assertions(2);
+  return mp.pingMumble(UNKNOWN_HOST_EXAMPLE, '60000', 45000).catch(e => {
+    _expectHostNotFound(e)
+  });
 })
 
 test('Compatible with example for nikkiii/node-mumble-ping on success', done => {
-  MumblePing(getTestMumbleServer(), function (err, res) {
+  MumblePing(_getTestMumbleServer(), function (err, res) {
     if (res) {
-      expectValidPingResult(res)
+      _expectValidPingResult(res)
       done()
       return
     }
@@ -53,7 +53,8 @@ test('Compatible with example for nikkiii/node-mumble-ping on success', done => 
 
 test('Compatible with example for nikkiii/node-mumble-ping on error', done => {
   MumblePing(UNKNOWN_HOST_EXAMPLE, '60000', function (err, res) {
-    expect(err).toEqual(getExpectedErrorENOTFOUND())
+    _expectHostNotFound(err)
     done()
   })
 })
+

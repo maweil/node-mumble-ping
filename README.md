@@ -1,6 +1,6 @@
 # node-mumble-ping
 
-This library can be used to ping a mumble server via UDP and retreive the following information:
+This library can be used to ping a mumble server via UDP and retrieve the following information:
 
 - Version of the mumble server
 - Number of users currently connected
