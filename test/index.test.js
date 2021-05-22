@@ -36,8 +36,10 @@ test('Promise resolves with error on timeout', () => {
 
 test('Promise resolves with error when host is not found', () => {
   const expectedError = getExpectedErrorENOTFOUND()
-
-  return expect(mp.pingMumble(UNKNOWN_HOST_EXAMPLE, '60000', 45000)).rejects.toEqual(expectedError)
+  expect.assertions(1);
+  return mp.pingMumble(UNKNOWN_HOST_EXAMPLE, '60000', 45000).catch(e => {
+    expect(e.code).toBe("ENOTFOUND");
+  });
 })
 
 test('Compatible with example for nikkiii/node-mumble-ping on success', done => {
