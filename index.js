@@ -40,14 +40,11 @@ function pingMumble (host, port = 64738, requestTimeout = 5000) {
 
     client.on('message', (message) => {
       clearTimeout(timeout)
-      const version = []
 
-      for (let i = 0; i < 4; i++) {
-        const ver = message.readUInt8(i)
-        if (ver !== 0) {
-          version.push(ver)
-        }
-      }
+      const major = message.readUInt16BE(0)
+      const minor = message.readUInt8(2)
+      const patch = message.readUInt8(3)
+      const version = [major, minor, patch]
 
       client.close()
       resolve({
